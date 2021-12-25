@@ -1,0 +1,36 @@
+.container{
+    width: 40%;
+    margin: auto;
+    margin-top: 20px;
+    padding: 10px;
+    box-shadow: 0 0 8px black;
+    border-radius: 10px;
+}
+
+.container input{
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+}
+.container button{
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    transition: 0.3s;
+    font-weight: bold;
+    box-shadow: 0 0 8px black;
+}
+.container button:hover{
+    background-color: black;
+    color: orange;
+}
+
+.container select{
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    background-color: white;
+}
