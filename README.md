@@ -785,7 +785,17 @@ Basics of ReactJS
 
 
             Q. can we take props in constructor?.
-
+                yes, we can recive props inside constructor.
+                example:
+                    constructor()
+                    {
+                        super();
+                        this.state={
+                            email:"sheeshpal@gmail.com"
+                        }
+                        console.log(this.props.name);
+                        console.log(this.props.gender);
+                    }
 
 
             ------------------***************
@@ -800,32 +810,534 @@ Basics of ReactJS
                 -> while anything change inside in html then render run again[rerender].
                     //when any props & state are udpate then render run again.
                 when render is run:
-                    1. when component make first time
+                    1. when component create first time
                     2. when state and props are update then is also rerender.
 
                     Example:
+                        ---------------User component
                         import React from 'react';
 
                         class User extends React.Component{
-                            render()
+                            constructor(){
+                                super();
+                                this.state={
+                                    email:"sheeshpal@gmail.com";
+                                }
+                            }
+                            render() //this render is a life cycle method
                             {
+                                console.log("Render Method Called...."); 
                                 return(
                                     <div>
                                         <h1>User Component</h1>
+                                        <button onClick={()=>this.setState({email:"singh@gmail.com"})}>updateEmail</button>
+                                        //rerender render method on update state of email.
                                     </div>
                                 );
                             }
                         }
+                        ----------------App component
+                            import User from './User';
+                            import React from 'react';
+                            function App(){
+                                const [name,setName] = React.useState("Sheeshpal");
+                                return(
+                                    <div>
+                                        <h1>Render Method in React....</h1>
+                                        <User name={name} /> //add user Component inside app component.
+                                        <button onClick={()=>setName("Singh")}>updateName</button> //it update name 
+                                        //while name is update render method of user component run for all that time.
+                                    </div>
+                                );
+                            }
+
+            Q. can we possible that there are more than one render method inside one component.
+            or can we write render inside render?.
+            Ans: 
+
+        -------------------******************
+        componentDidMount Life cycle method :it call after when all html & css load.
+            1. Use of componentDidMount Method.
+            2. Make Class component.
+            3. No Effect of state and props.
+
+                ->it basicaly used when call to API.
+                ->it load after when complete DOM are loaded.
+
+            Example:
+
+            import React from 'react'
+            class App extends React.Component{
+                constructor()
+                {
+                    super();
+                    console.log("constructor load.......");//it render first
+                    this.state={
+                        name="Sheeshpal"
+                    }
+                }
+                componentDidMount(){
+                    console.log("component Did Mount loaded Now")//it render third
+                }
+                render()
+                {
+                    console.log("render method load......");//it render second
+                    return(
+                    <div>
+                        <h1>Component Did Mount....{this.state.name}</h1>
+                        <button onClick={()=>this.setState("Sing")}>updateName</button>
+                        //after update name constructor & render are not load again only render method load again.
+                    </div>
+                );
+                }
+            }
+
+            Q. should we update state inside render method
+                & can we update state inside componentDidMount.?
+
+            Ans. we can update but we don't update here bcz it run while state and props are update 
+            that by it can go inside infinite loop.
+
+            Q. Can we stop to call componentDidMount?.
+                if shouldComponentUpdate return false. then componentDidMount never run.
+            
+
+            ----------------**************
+            componentDidUpdate Life cycle method. : it run only when there is any state or props are update.
+                1. Use of componentDidUpdate method.
+                2. Make class component.
+                3. Use with state and props.
+                4. previous props and state.
+
+                use:
+                    -> if you update any state inside it then it make a loop and run infinite time.
+                    -> bcz it run when state update so wheneve state update it run again and again.
+                    -> if you update state inside it then only update inside a condition.
+
+                    Example:
+
+                    import React from 'react';
+                    class App extends React.Component{
+                        constructor()
+                        {
+                            super();
+                            this.state={
+                                name:"Sheeshpal"
+                            }
+                            console.log("constructor loaded.....");//it run first
+
+                        }
+                        componentDidUpdate()
+                        {
+                            
+                            console.log("component Did update loaded....."); //it doesn't run while 
+                            //state or props are not udpate.
+                        }
+
+                        render()
+                        {
+                            console.log("render method loaded......");//it run second
+                            return(
+                                <div>
+                                    <h1>Componnet Did update {name}</h1>
+                                    <button onClick={()=>this.setState("Singh")}>updateName</button>
+                                    //after update name componentDidUpdate called....
+                                </div>
+                            );
+                        }
+
+
+                    }
+
+                ------------------
+                    componentDidUpdate(preProps,preState,snapshot)
+                        {
+                            //preState provide previous state.
+                            if(preState.count===this.state.count){
+                                alert("data is already same");
+                            }
+
+                            console.log("component Did update loaded....."); //it doesn't run while 
+                            //state or props are not udpate.
+                        }
+
+                    componentDidUpdate(preProps,preState,snapshot){
+                        if(this.state.count<10){
+                            this.setState({count:this.state.count+1})
+                        }
+                    }
+
+
+                Q. should we call API inside componentDidUpdate?.
+                    yes, we can call it, if we do conditional call other wise we do it inside 
+                    componentDidMount.
+
+            ---------------***************
+            shouldComponentUpdate Life Cycle Method : it basically ask to ask that component should update or not.
+            we can use condition when update or not. we can stop a specific rendering.
+            if we use it then component are not render again and again that by performance increase.
+                1. When shouldComponentUpdate called and use.
+                2. It can stop renddering.
+                3. Use with state and props.
+
+
+
+            Example:
+
+                import React from 'react';
+                
+                class App extends React.Component{
+                    constructor()
+                    {
+                        super();
+                        this.state={
+                            count:0
+                        }
+                    }
+
+                    shouldComponentUpdate()
+                    {
+                        console.log("shouldComponentUpdate loaded....");
+                        //it return false by default.
+                    }
+                    render(){
+                        return(
+                            <div className="App">
+                                <h2>Should Compoent update {this.state.count}</h2>
+                                <button onClick={()=>this.setState({count:this.state.count+1})}>updateCount</button>
+                                //increase counter at each click of button.
+                            </div>
+                        );
+                    }
+
+                }
+
+                here shouldComponentUpdate block rendering in itself
+                in avobe code count are not update. in render but internaly it update.
+
+                
+                import React from 'react'
+                class App extends React.Compnent{
+                    constructor()
+                    {
+                        super();
+                        this.state={
+                            count:0
+                        }
+                    }
+                    shouldComponentUpdate()
+                    {
+                        console.log("shouldComponentUpdate loade......");
+                        return true;//now it allow to render, render method.
+                    }
+
+                    render()
+                    {
+                        return(
+                            <div>
+                                <h2>Should Component update {this.state.count}</h2>
+                                <button onClick={()=>this.setState({count:this.state.count+1})}>updateCounter</button>
+                            </div>
+                        );
+                    }
+                }
+            ------------ it can we use to stop render at specific time.
+            shouldComponentUpdate()
+            {
+                if(this.state.count>5 && this.state.count<10){
+                    return true; //it all render only between 5<render>10
+                }
+            }
+
+            Q.which one call first componentDidUpdate or shouldComponentUpdate?.
+                if shouldComponentUpdate return true then it load first then load componentDidUpdate.
+                if shuldComponentUpdate return false then it not load then only load componentDidUpdate.
+
+
+
+            ----------------***************
+            componentWillUnmount Life Cycle Method. it call when component remove form DOM.
+                1. When component will unmount called.
+                2. Example of component will unmount.
+                3. Use of component will unmount.
+                
+                * when we do hide and show in component then at the time of hide it completly
+                remove from DOM. and then this life cycle call
+
+
+                import React from 'react';
+
+                class App extends React.Component{
+                    constructor(){
+                        super();
+                        this.state={
+                            show:true
+                        }
+                    }
+                    render(){
+                        return(
+                            <div>
+                               {
+                                   this.state.show?  <Student />
+                                   : null
+                               }
+                                <button onClick={()=>this.setState({show:!this.state.show})}>ToggleChildComponent</button>
+                            </div>
+                        );
+                    }
+                }
+
+                ----------child student Component.
+                class Student extends React.Component{
+                    componentWillUnmount(){
+                        alert("componentWillUnmount Called.......");
+                    }
+                    render()
+                    {
+                        return(
+                            <div>
+                                <h1>Student Component</h1>
+                            </div>
+                        );
+                    }
+                }
+                exprot default Student
+
+                Q. componentWillUnmount run just before or after remove component form DOM.
+                    it run just before remove component from DOM.
+                Q. componentWillUnmount depent on class or functional component or not.
+                   it not depent on class or function component. 
+                   only where componentWillUnmount called only that function must be class component 
+                   it work perfectly.
+                
+
+
+            -----------------*****************
+             Hooks in ReactsJS :
+                1. What are hooks in ReacsJS
+                2. How to use them
+                3. Example of React Hooks with useState.
+
+                With Hook, we can use class component features in functional components such as state,life cycle, pure component, etc.
+
+                Example:
+                    import React,{useState} from 'react'; //here useState is a hook
+                    function App(){
+                        const [data,setData] = useState("Sheeshpal"); //this value is set into data variable as default.
+                        return(
+                            <div>
+                                <div>Hello World!</div>
+                            </div>
+                        );
+                    }
+                
+            * Each Hooks start with use like useState,useEffect etc.
+            * use keyword reserverd for creating hook so we can not use it anywhere in project.
+
+
+            Q. Can we used hook in class Component?.
+                No, we can not use Hooks in class component.
+
+
+            ---------------***************
+            useEffect in ReactJS.
+                1. What is useEffect
+                2. How to use useEffect
+                3. Example useEffect
+                4. useEffect with State and props
+
+                useEffect use as Life cycle method. 
+                when component create,state update,props update it call for all. we can put it into condition.
+                it is all in one package for all life cycle method.
+                useEffect Hook as componentDidMount, componentDidUpdate, and componentWillUnmount combined.
+
+                Example:
+                    import React from 'react';
+
+                    function App(){
+
+                        React.useEffect(()=>{
+                            alert("Hii");//it run when component load.
+                            console.log("Hii!"); //it call like as componentDidMount
+                        })
+
+                        return(
+                            <div>
+                                <h1>useEffect Hook</h1>
+                            </div>
+                        );
+                    }    
+
+                    ---------- another example with update state.
+                    function App(){
+                        const [count,setCount] = React.useState(0);//default value of count is 0.
+                        React.useEffect(()=>{
+                            console.log("useEffect run");
+                        });
+                        
+                        React.useEffect(()=>{
+                            console.log("useEffect run 2");         //we can define multiple useEffect
+                        });
+                        return(
+                            <div>
+                                <h2>useEffect Hook</h2>
+                                <button onClick={()=>setCount(count+1)}>update</button>
+                                //when update count then useEffect load at that time and each time.
+                            </div>
+                        );
+                    }
+
+                Q. Can we define function inside useEffect Hook 
+                and can define useEffect inside function.
+
+            
+            --------------*************
+            useEffect with Specific State and Props
+                1. What is useEffect
+                2. useEffect with Specific state
+                3. useEffect with Specific props
+
+
+                useEffect(()=>{
+                    console.log("HelloWorld!");
+                },[here we use condition]);
+
+
+                Example:
+                    import React,{useEffect,useState} from 'react';
+                    function App(){
+                        const [data,setData] = useState(10);  //data =10;
+                        const [count,setCount] = useState(100);
+                        useEffect(()=>{
+                            console.log("useEffect called.....");
+                        })
+                        return(
+                            <div>
+                                <h1>Count: {count}</h1>
+                                <h1>Data: {data}</h1>
+                                <button onClick={()=>setCount(count+1)}>UpdateCount</button>
+                                <button onClick={()=>setData(data+1)}>updateData</button>
+                                //here useEffect work on both update data as well as count.
+                            </div>
+                        );
+                    }
+
+            -----------------another example where we can update only useEffect at updateData.
+                    function(){
+                        const [data,setData] = useState(10);
+                        const [count,setCount] = useState(100);
+
+                        useEffect(()=>{
+                            console.log("useEffect called only for data state.....");
+                        },[data])//it run only for data update
+
+                        useEffect(()=>{
+                            alert("count is : "+count);
+                        },[count])//it run only for count update
+
+                        return(
+                            <div>
+                                <h1>Count : {count}</h1>
+                                <h1>Data : {data}</h1>
+                                <button onClick={()=>setCount(count+1)}>updateCount</button>
+                                <button onClick={()=>setData(data+1)}>updateData</button>
+                            </div>
+                        );
+                    }
+
+            ------------call to specific props.
+            import {useEffect} from 'react';
+
+            function User(props){
+
+                useEffect(()=>{
+                    console.log("useEffect called......");
+                })
+                return(
+                    <div>
+                        <h1>Count Props : {props.count}</h1>
+                        <h1>Data Props : {props.data}</h1>
+                    </div>
+                );
+            }
+
+            ----------here is app component for above code.
+            function App(){
+                const [data,setData] = useState(10);
+                const [count,setCount] = useState(100);
+
+                return(
+                    <div>
+                        <User count = {count} data = {data} />
+                        <button onClick={()=>setCount(count+1)}>updateCount</button>
+                        <button onClick={()=>setData(data+1)}>updateData</button>
+                    </div>
+                );
+            }
+
+            -----------------call to specific props with condition.
+             import {useEffect} from 'react';
+
+            function User(props){
+
+                useEffect(()=>{
+                    console.log("Count is : "+ props.count);
+                },[props.count,props.data])
+                return(
+                    <div>
+                        <h1>Count Props : {props.count}</h1>
+                        <h1>Data Props : {props.data}</h1>
+                    </div>
+                );
+            }
+
+            ----------here is app component for above code.
+            function App(){
+                const [data,setData] = useState(10);
+                const [count,setCount] = useState(100);
+
+                return(
+                    <div>
+                        <User count = {count} data = {data} />
+                        <button onClick={()=>setCount(count+1)}>updateCount</button>
+                        <button onClick={()=>setData(data+1)}>updateData</button>
+                    </div>
+                );
+            }
+
+        
+        ---------------***************
+        Style type in ReactJS.
+         1. How many ways we have for style in Reactjs. : three type style are there
+         2. Use the normal stylesheet // like app.css,index.css
+         3. Style with the variable or Inline Style //use inside tag, use only camel case.
+         4. CSS with Module. //making css file in a module
+         
+        for inline : <h1 style={{color:'red',backgroundColor:'black'}}>H1 heading.....</h1>
 
 
 
 
+        4. css with module: save name with module.  like "custom.modules.css"
+            .success{
+                color:goldernrod;
+                background-color: black;
+            }
+
+            ---------Use inside app.js
+            import style form './custom.module.css';
+
+            function(){
+
+                return(
+                    <div>
+                        <h1 className={style.succcess} >Heading 1........</h1>
+                    </div>
+                );
+            }
 
 
-
-
-
-
+        Q. Can we used regular css and modular css with combine.
 
 
 
@@ -876,6 +1388,12 @@ Basics of ReactJS
 
 
 =============================== Interview Question ======================
+    .
+    |___constructor
+    |___render
+    |___componentDidMount
+
+
 1. what is NPM and why we used it?.
     NPM => stands for Node Package Manager
     It is manage all the node package which is required to run react app.
