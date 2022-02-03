@@ -1,11 +1,13 @@
 # ReactJS
-Basics of ReactJS
+         [DomainRacer]            <-----------------------------Basics of ReactJS---------------------->
+
+
 
                 What is React => angular & vue is also work same like react.
         1. React is JavaScript Library.
         2. The main focus is building UI as fast as possible.
-        3. So this is used to Single Page Application[SAP].
-        4.Means Complete Website in Single Page.
+        3. So this is used to Single Page Application[SPA].
+        4. Means Complete Website in Single Page.
                 React work is to fast develope UI.
         -----------------------************
         Why we used React?  => bcz React is Fast.
@@ -14,7 +16,7 @@ Basics of ReactJS
                 Virtual DOM update only required list
                 Real DOM update Complete List.
         ----------------------**************
-        History & Version
+        History & Version UI as fast as possible.
         1. Maintained by Facebook
         2. First Release on 29 May 2013.
         3. The current version is 17.0.2.
@@ -27,14 +29,18 @@ Basics of ReactJS
         React js without installation
          * React is Generally used with NPM
          * But we can also use CDN[Content Delivery Netwrok]
-         
+         link these three CDN link.
     <script type="application/javascript" src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>           ===> link for react
     <script type="application/javascript" src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>   ===> link for react-dom
     <script type="application/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>                   ===> link for babel
 
     we need these three link for run reactjs without nodejs. using in head section
     then in script section:
+
+
+
         <script text ="text/babel">
+
         function Test(){
             const clickHandler = () => alert("button clicked.....");
             return <button onClick={clickHandler}>Clickme</button>
@@ -46,7 +52,13 @@ Basics of ReactJS
             }
         }
         ReactDOM.render(<Hello />,document.getElementById("id_of_div"));
+        
         </script>
+
+
+
+
+
 
         -------------------------*************
         index.js is the entry point in reactjs. and this is the main file.
@@ -302,7 +314,7 @@ Basics of ReactJS
 
 
         ---------------------------*************
-        State in Functional Component:
+        State in Functional Component: state is an object.
             1. What is state: is a data container which contains data.
                 State is an object. if normal variable are update then react components are not update in react. 
                 bcz react wroking method is different. react only update its components when changes appearing in props and state.
@@ -555,6 +567,8 @@ Basics of ReactJS
                 const [name,setName] = useState("");//by default it is empty.
                 const [tnc,setTNC] = useState(false);
                 const [interest,setInterest] = useState("");
+
+
                 function getFormData(event){
                     e.preventDefault();//it stop to submit form.
                     console.log(name,tnc,interest);
@@ -590,7 +604,7 @@ Basics of ReactJS
             3. Not Recommended Way for condition
             4. Correct way condition
             
-            //this is nod recomended way.......... 
+            //this is not recomended way.......... 
             New componenet with Profile.js
                 import React from 'react'
                 function Profile(){
@@ -674,7 +688,7 @@ Basics of ReactJS
                     <div>
                         //this method we can take over to its supper child 
                         //following this process parent and child.
-                        <User data = { getData } />
+                        <User data = { getData } />                     //pass function name.
                     </div>
                 );
             }
@@ -717,7 +731,7 @@ Basics of ReactJS
         ----------------------------           --------------------------------                     ----------------------
        | ComponentDidMount          |         |     ComponentDidUpdate         |                   |  ComponentWillUnmount|
         ----------------------------           --------------------------------                     ----------------------
-
+        constructor ready before render() method.
 --------------------------------------------------------------------------------------------------------------------------------
             difference between life cycle and phase is that phase is only three but life cycle are more.
 
@@ -731,20 +745,21 @@ Basics of ReactJS
         Use:
             * when page is load in some website pop-up show. so how to find reactJS that when show pop-up
               it simple check that prvious html is done then it show pop-up.----> for this use componentDidMount.
-            * it can listen from button that state is update or not.
-            * if we don't remove component then lots of garbae are containe in website. which slow our website.
+
+            * it can listen from button that state is update or not.    ----> componentDidUpdate.
+            * if we don't remove component then lots of garbae are containe in website. which make it slow our website.
             * when component remove then we get an event -------> componentWillUnmount
 
     These all life cycle method used inside component. it can be use with both class and function.
                                                                                                                             
         When is run Life Cycle Method in React.
-            1. When Component is loaded.
-            2. When Component is updated with state and props.
-            3. When Component is removed.
+            1. When Component is loaded.    ----> componentDidMount
+            2. When Component is updated with state and props.  ----> componentDidUpdate.
+            3. When Component is removed.   -----> componentWillUnmount.
 
     
         Q. if we remove product and load again then new life cycle run or run previous life cycle.
-        Ans: after rmove component and load agin in this process complete life cycle run again.
+        Ans: after remove component and load agin in this process complete life cycle run again.
         
         
         
@@ -756,13 +771,13 @@ Basics of ReactJS
             2. Why this is important?.
             3. What we can do in this life cycle method?.
 
-            constructor ready before render html.
+            constructor ready before render method.
 
 
             Example:
 
                 import React from 'react';
-
+                                                        
                 class App extends React.Component{
                     //constructor call before call render method
                     constructor(){
@@ -772,7 +787,7 @@ Basics of ReactJS
                         this.state = {
                             data:"Sheeshpal"
                         }
-                        //we are not call API here bcz render is not ready at now. API call in constructorDidMount life cycle.
+                        //we are not call API here bcz render is not ready at now. API call in componentDidMount life cycle.
 
                     }
                     render()
@@ -805,9 +820,9 @@ Basics of ReactJS
                 3. Use state and props with render.
             
 
-                ----> meaning of render is provide.//after execute represent code.
+                ----> meaning of render is provide.//after execute, represent code.
                 -> complete html write down inside render method. for class components
-                -> while anything change inside in html then render run again[rerender].
+                -> if anything change inside in html then render run again[rerender].
                     //when any props & state are udpate then render run again.
                 when render is run:
                     1. when component create first time
@@ -878,6 +893,8 @@ Basics of ReactJS
                 }
                 componentDidMount(){
                     console.log("component Did Mount loaded Now")//it render third
+                        //no effect of props and state.
+                        //run only one time.
                 }
                 render()
                 {
@@ -899,7 +916,7 @@ Basics of ReactJS
             that by it can go inside infinite loop.
 
             Q. Can we stop to call componentDidMount?.
-                if shouldComponentUpdate return false. then componentDidMount never run.
+            Ans:  if shouldComponentUpdate return false. then componentDidMount never run.
             
 
             ----------------**************

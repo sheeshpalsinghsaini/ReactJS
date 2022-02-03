@@ -1,0 +1,23 @@
+What is DOM :[Document Object Model]
+    it is a programming interface for web page. it is basicaly represent a web page structure.
+    that's why programmer can change the document structure, style and content. the DOM 
+    represent the document as nodes and objects.
+
+    A web page is a document that can be either displayed in the browser window or as the HTML
+    source. In both cases, it is the same docuemnt but the Document Object Model (DOM) represention
+    allows it to manipulated. as an o
+    bject-oriented represention of the web page, it can be modified
+    with a scripting language such as javascript.
+
+    In Simple Words:
+                it is represent the structure of web page. in the form of nodes and objects.
+                thats why programmer can change the document structure, style and content.
+                
+
+ Virtual DOM:
+    is a programming concept where an ideal or virutal DOM are kept in memory and 
+    synchronised with real DOM by a libraray such as ReactDOM.
+
+    React doesn't change direclty in real DOM it firstly changes in Virtual DOM 
+    whatever are changes in virtual DOM they are Simple reflect in real DOM and 
+    doesn't update completed real dom.
